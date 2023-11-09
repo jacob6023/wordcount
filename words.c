@@ -43,7 +43,9 @@ void insert(HashTable* ht, char* word) {
 
     // If the word does not exist create node and add it to the table.
     Node* newNode = malloc(sizeof(Node));
+    //dupes word and allocates memory for heap
     newNode->word = strdup(word);
+    //make count 1 because its a new occurance of the word.
     newNode->count = 1;
     newNode->next = ht->array[index];
     ht->array[index] = newNode;
