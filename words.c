@@ -4,20 +4,20 @@
 #include <stdlib.h>
 #include <dirent.h>
 #include <sys/stat.h>
-#define TABLE_SIZE 1000
-#define MAX_WORD_LENGTH 100
-
+#define TABLE_SIZE 1000         // Size of the hash table
+#define MAX_WORD_LENGTH 100    // Maximum word length
 
 typedef struct Node {
-    char* word;
-    int count;
-    struct Node* next;
+    char* word;         // Pointer to store the word
+    int count;          // Count of the word occurrences
+    struct Node* next;  // Pointer to the next Node (for handling collisions)
 } Node;
 
 typedef struct HashTable {
-    Node* array[TABLE_SIZE];
+    Node* array[TABLE_SIZE];  // Array of Nodes (the hash table)
 } HashTable;
 
+// Function to calculate the hash value for a word
 int hash(char* word) {
     int hash = 0;
     for (int i = 0; word[i] != '\0'; i++) {
@@ -26,11 +26,14 @@ int hash(char* word) {
     return hash;
 }
 
+// Function to insert a word into the hash table
 void insert(HashTable* ht, char* word) {
     int index = hash(word);
     Node* temp = ht->array[index];
 
+    // Traverse the linked list at the index.
     while (temp != NULL) {
+        // If the word already exists, increment the count
         if (strcmp(temp->word, word) == 0) {
             temp->count++;
             return;
@@ -38,6 +41,7 @@ void insert(HashTable* ht, char* word) {
         temp = temp->next;
     }
 
+    // If the word does not exist create node and add it to the table.
     Node* newNode = malloc(sizeof(Node));
     newNode->word = strdup(word);
     newNode->count = 1;
@@ -45,6 +49,7 @@ void insert(HashTable* ht, char* word) {
     ht->array[index] = newNode;
 }
 
+// Displays the word counts stored in the hash table
 void displayWordCounts(HashTable* ht) {
     printf("Word Counts:\n");
     for (int i = 0; i < TABLE_SIZE; i++) {
@@ -56,6 +61,7 @@ void displayWordCounts(HashTable* ht) {
     }
 }
 
+// Function to free the memory used by the hash table
 void freeHashTable(HashTable* ht) {
     for (int i = 0; i < TABLE_SIZE; i++) {
         Node* current = ht->array[i];
