@@ -77,11 +77,6 @@ void freeHashTable(HashTable* ht) {
     free(ht);
 }
 
-int main(int argc, char *argv[]){
-    
-}
-
-
 void recursiveSearch(char *path, int passes) {
     struct dirent *entry;
     struct stat info;
@@ -141,4 +136,8 @@ void recursiveSearch(char *path, int passes) {
         //if not a file or directory, ignores
     }
     closedir(dir);
+}
+
+int main(int argc, char *argv[]){
+    
 }
