@@ -103,12 +103,12 @@ int checkAscii(char c) {
     }
 }
 
-void fileRead(HashTable* ht, char *path) {
+void fileRead((HashTable* ht, char *path) {
     char buf[2];
     char* input = malloc(1);
     int length = 0;
     int bytes = 0, fd;
-    int inWord = 0, hyphenCheck = 0;
+    int inWord = 0, hyphenCheck = 0, inApostr = 0;
 
     fd = open(path, O_RDONLY);
     if (fd < 0) {
@@ -116,17 +116,20 @@ void fileRead(HashTable* ht, char *path) {
         return;
     }
     memset(input, 0, 1);
-    while ((bytes = read(fd, buf, 1)) > 0) {
-        //printf("Letter: %c\n", buf[0]);
+    do {
+        (bytes = read(fd, buf, 1));
+        //printf("Letter: %c and inWord: %d and bytes: %d\n", buf[0], inWord, bytes);
         if (bytes == 0 && inWord == 1) {
             insert(ht, input);
-            memset(input, 0, length + 1);
             //printf("Word: %s\n\n", input);
+            memset(input, 0, length + 1);
         } else {
-            if (checkAscii(buf[0]) == 1 && hyphenCheck == 0 && inWord == 1) {
+            if (checkAscii(buf[0]) == 1 && hyphenCheck == 0 && inWord == 1 && inApostr == 0) {
                 hyphenCheck = 1;
             } else {
+                inApostr = 0;
                 if (checkAscii(buf[0]) == 0) {
+                    if (buf[0] == '\'') {inApostr = 1;}
                     inWord = 1;
                     if (hyphenCheck == 1) {
                         hyphenCheck = 0;
@@ -154,7 +157,7 @@ void fileRead(HashTable* ht, char *path) {
             }
             
         }
-    }
+    } while (bytes > 0);
     free(input);
     close(fd);
 }
