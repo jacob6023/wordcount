@@ -52,29 +52,32 @@ void insert(HashTable* ht, char* word) {
     ht->array[index] = newNode;
 }
 
-// Displays the word counts stored in the hash table
+// Displays the word counts stored in the hash table in lexicographic order
 void displayWordCounts(HashTable* ht) {
-    //printf("Word Counts:\n");
+    // Collect words into an array of nodes
+    Node* words[TABLE_SIZE * MAX_WORD_LENGTH];
+    int wordCount = 0;
+
     for (int i = 0; i < TABLE_SIZE; i++) {
         Node* temp = ht->array[i];
         while (temp != NULL) {
-            //printf("%s: %d\n", temp->word, temp->count);
-            
-            size_t wordLen = strlen(temp->word);
-
-            int countLen = (temp->count % 10) + 1;
-
-            char buffer[wordLen + countLen + 4];
-
-            int size = snprintf(buffer, sizeof(buffer), "%s: %d\n", temp->word, temp->count);
-
-            ssize_t bytes_written = write(1, buffer, size);
-
-            if (bytes_written == -1) {
-                printf("Error: Failed to write.");
-            }
-
+            words[wordCount++] = temp;
             temp = temp->next;
+        }
+    }
+
+    // Sort the array of nodes by count in descending order, then alphabetically
+    qsort(words, wordCount, sizeof(Node*), compareWords);
+
+    // Write the sorted word counts
+    for (int i = 0; i < wordCount; i++) {
+        char buffer[4096];  
+        int size = snprintf(buffer, sizeof(buffer), "%s: %d\n", words[i]->word, words[i]->count);
+
+        ssize_t bytes_written = write(1, buffer, size);
+
+        if (bytes_written == -1) {
+            write(2, "Error: Failed to write.\n", 25);
         }
     }
 }
