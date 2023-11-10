@@ -9,14 +9,18 @@ Devon Botney dcb200
 Hashtable:
 The hashtable is a fundamental data structure used in the program to efficiently store and retrieve word occurrences. 
 It employs a hash function to map words to specific indices in the array, handling collisions through linked lists of nodes.
+
 Insert:
 The insert function adds a word to the hashtable. 
 It calculates the hash value, searches for the word in the linked list at the calculated index, and either increments the count if the word already exists or creates a new node if it's a new word.
+
 displayWordCounts:
 The displayWordCounts function outputs the word counts stored in the hashtable. 
 It collects words into an array of nodes, sorts them first by count in descending order and then alphabetically, and finally writes the sorted word counts to the standard output.
+
 freeHashTable:
 The freeHashTable function deallocates the memory used by the hashtable. It iterates through each element of the hashtable, freeing the memory for both words and nodes.
+
 checkAscii:
 This was a helper method made to help with fileRead. Essentially, it takes a character and tells me if it is either a hyphen, apostrophe/letter, or something else. It will return an integer depending on the result. This is mainly used to check for test cases that would be hard to handle involving hyphens and to shorten a lot of if statements. I tested it by feeding in different characters to make sure it outputted the correct integer.
 
