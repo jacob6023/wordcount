@@ -3,3 +3,31 @@ The creation of wordcount.c
 Team Members:
 Jacob Jeong jhj48
 Devon Botney dcb200
+
+## Methodology and Testing
+
+Hashtable:
+
+Insert:
+
+displayWordCounts:
+
+freeHashTable:
+
+checkAscii:
+This was a helper method made to help with fileRead. Essentially, it takes a character and tells me if it is either a hyphen, apostrophe/letter, or something else. It will return an integer depending on the result. This is mainly used to check for test cases that would be hard to handle involving hyphens and to shorten a lot of if statements. I tested it by feeding in different characters to make sure it outputted the correct integer.
+
+fileRead:
+This method takes in a path provided by recursiveSearch and outputs strings for the method insert. The start is just a bunch of variable initialization and to check if the file can be opened. I then reset input in case there was data there already and start reading bytes from the file. It will make sure that we read a byte and will output whatever word we were building if it reads 0 bytes as that would mean the end of the file. If it reads more than 0 bytes, we go through a process where it will handle cases surrounding when hyphens count in a word, when apostrophes show up, and making sure string terminators are added in the right spots. Once it hits an ascii that isn't accepted and we were in a word, it will output the string to insert.
+
+This method was tested through print statements that were commented out. I would feed a file directly into the method and test to make sure it printed all the words in order. Overall, the testing was pretty straight forward.
+
+recursiveSearch:
+This method takes a path given by the terminal arguments and either outputs them to fileRead if a file or recursively searches if it is a directory. It first attempts to open the argument to see if it is a directory. It also attempts to see if it is a file. If it is a file, it will output that file to fileRead. If it is a directory, we recursively search through the directory and and subdirectories, outputting to fileRead any file that is readable and ends in '.txt'.
+
+This method was tested using both files that ended with or without .txt as well as multiple directories and subdirectories that were fed into the terminal. Overall, the testing was pretty straight forward for this method.
+
+main:
+Main was a simple method that takes the arguments from the terminal, makes sure we actually took arguments, creates a hashtable to store the words, and then loops through the arguments, throwing them into recursiveSearch. Afterwards, we display the results sorted by occurance and then lexographically. Afterwards, we free the hashtable.
+
+The method is pretty straight forward testing wise in that all we needed to do was make sure that the program ran as it is just calling previously made functions that were more or less tested independently of one another.
