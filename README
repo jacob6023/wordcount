@@ -9,6 +9,7 @@ Devon Botney dcb200
 Hashtable:
 The hashtable is a fundamental data structure used in the program to efficiently store and retrieve word occurrences. 
 It employs a hash function to map words to specific indices in the array, handling collisions through linked lists of nodes.
+The Hashtable was tested using the insert method below.
 
 Insert:
 The insert function adds a word to the hashtable. 
