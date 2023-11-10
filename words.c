@@ -103,7 +103,7 @@ int checkAscii(char c) {
     }
 }
 
-void fileRead((HashTable* ht, char *path) {
+void fileRead(HashTable* ht, char *path) {
     char buf[2];
     char* input = malloc(1);
     int length = 0;
