@@ -52,7 +52,20 @@ void insert(HashTable* ht, char* word) {
     ht->array[index] = newNode;
 }
 
-// Displays the word counts stored in the hash table in lexicographic order
+// Helper function for sorting words by count in descending order, then alphabetically
+int compareWords(const void* a, const void* b) {
+    const Node* nodeA = *(const Node**)a;
+    const Node* nodeB = *(const Node**)b;
+
+    // Compare by count in descending order
+    if (nodeB->count != nodeA->count) {
+        return nodeB->count - nodeA->count;
+    }
+
+    // If counts are equal, compare alphabetically
+    return strcmp(nodeA->word, nodeB->word);
+}
+
 void displayWordCounts(HashTable* ht) {
     // Collect words into an array of nodes
     Node* words[TABLE_SIZE * MAX_WORD_LENGTH];
@@ -71,14 +84,29 @@ void displayWordCounts(HashTable* ht) {
 
     // Write the sorted word counts
     for (int i = 0; i < wordCount; i++) {
-        char buffer[4096];  
-        int size = snprintf(buffer, sizeof(buffer), "%s: %d\n", words[i]->word, words[i]->count);
+        // Calculate the size needed for the buffer
+        int size = snprintf(NULL, 0, "%s: %d\n", words[i]->word, words[i]->count);
+        
+        // Dynamically allocate memory for the buffer
+        char* buffer = malloc(size + 1);  // +1 for the null terminator
 
+        if (buffer == NULL) {
+            fprintf(stderr, "Error: Failed to allocate memory for buffer.\n");
+            return;
+        }
+
+        // Format the string into the dynamically allocated buffer
+        snprintf(buffer, size + 1, "%s: %d\n", words[i]->word, words[i]->count);
+
+        // Write the dynamically allocated buffer to standard output
         ssize_t bytes_written = write(1, buffer, size);
 
         if (bytes_written == -1) {
             write(2, "Error: Failed to write.\n", 25);
         }
+
+        // Free the dynamically allocated buffer
+        free(buffer);
     }
 }
 
